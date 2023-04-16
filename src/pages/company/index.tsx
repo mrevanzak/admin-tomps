@@ -13,7 +13,7 @@ export default function CompanyPage() {
       {/* <Seo templateTitle='Home' /> */}
 
       <main>
-        <div className='layout relative flex min-h-screen flex-col items-center justify-center py-12'>
+        <div className='layout relative flex min-h-screen flex-col justify-center py-12'>
           <div className='overflow-hidden bg-white shadow sm:rounded-md'>
             <ul role='list' className='divide-y divide-gray-200'>
               {data?.map((company) => (

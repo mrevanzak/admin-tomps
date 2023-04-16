@@ -29,9 +29,7 @@ export default function HomePage() {
       <main>
         <section className='bg-white'>
           <div className='layout relative flex min-h-screen flex-col items-center justify-center py-12'>
-            <div className='flex gap-2 pb-8'>
-              <Button onClick={open}>Add Company</Button>
-            </div>
+            <Button onClick={open}>Add Company</Button>
           </div>
         </section>
       </main>

@@ -1,6 +1,9 @@
+import { useDisclosure } from '@mantine/hooks';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 
+import Button from '@/components/buttons/Button';
+import EmployeeModal from '@/components/EmployeeModal';
 import Layout from '@/components/layout/Layout';
 
 import getCompanyDetail from '@/services/company/getCompanyDetail';
@@ -15,11 +18,13 @@ export default function CompanyDetailPage() {
       enabled: router.isReady,
     }
   );
+  const [opened, { open, close }] = useDisclosure();
 
   return (
     <Layout>
+      <EmployeeModal opened={opened} close={close} />
       <main>
-        <div className='layout relative flex min-h-screen flex-col items-center justify-center py-12'>
+        <div className='layout relative flex min-h-screen flex-col  justify-center py-12'>
           <div className='overflow-hidden bg-white shadow sm:rounded-lg'>
             <div className='px-4 py-5 sm:px-6'>
               <h3 className='text-lg font-medium leading-6 text-gray-900'>
@@ -76,6 +81,7 @@ export default function CompanyDetailPage() {
               </dl>
             </div>
           </div>
+          <Button onClick={open}>Add Employee</Button>
         </div>
       </main>
     </Layout>

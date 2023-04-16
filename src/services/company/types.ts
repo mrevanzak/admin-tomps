@@ -8,7 +8,7 @@ export const companySchema = z.object({
   email: z.string().email().toLowerCase(),
   phone: z.string().min(1, { message: 'Phone is required' }),
   npwp: z.string().length(15),
-  total_employee: z.preprocess(Number, z.number()),
+  total_employee: z.number().optional(),
   parent_id: z.string().uuid().optional(),
 });
 
