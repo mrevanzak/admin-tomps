@@ -1,8 +1,6 @@
-import { useDisclosure } from '@mantine/hooks';
+import { useRouter } from 'next/router';
 import * as React from 'react';
 
-import Button from '@/components/buttons/Button';
-import CompanyModal from '@/components/CompanyModal';
 import Layout from '@/components/layout/Layout';
 import Seo from '@/components/Seo';
 
@@ -19,18 +17,19 @@ import Seo from '@/components/Seo';
 // to customize the default configuration.
 
 export default function HomePage() {
-  const [opened, { open, close }] = useDisclosure();
+  const router = useRouter();
+  React.useEffect(() => {
+    router.push('/company');
+  }, [router]);
+
   return (
     <Layout>
       {/* <Seo templateTitle='Home' /> */}
       <Seo />
-      <CompanyModal opened={opened} close={close} />
 
       <main>
         <section className='bg-white'>
-          <div className='layout relative flex min-h-screen flex-col items-center justify-center py-12'>
-            <Button onClick={open}>Add Company</Button>
-          </div>
+          <div className='layout relative flex min-h-screen flex-col items-center justify-center py-12'></div>
         </section>
       </main>
     </Layout>

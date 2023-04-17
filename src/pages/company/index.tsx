@@ -1,20 +1,38 @@
+import { useDisclosure } from '@mantine/hooks';
 import { useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
 import { HiCalendar, HiChevronRight } from 'react-icons/hi';
 
+import Button from '@/components/buttons/Button';
+import CompanyModal from '@/components/CompanyModal';
 import Layout from '@/components/layout/Layout';
 
 import getCompanies from '@/services/company/getCompanies';
 
 export default function CompanyPage() {
+  const [opened, { open, close }] = useDisclosure();
+
   const { data } = useQuery(['company'], () => getCompanies());
   return (
     <Layout>
       {/* <Seo templateTitle='Home' /> */}
+      <CompanyModal opened={opened} close={close} />
 
       <main>
         <div className='layout relative flex min-h-screen flex-col justify-center py-12'>
           <div className='overflow-hidden bg-white shadow sm:rounded-md'>
+            <div className='border-b border-gray-200 bg-white px-4 py-5 sm:px-6'>
+              <div className='-ml-4 -mt-2 flex flex-wrap items-center justify-between sm:flex-nowrap'>
+                <div className='ml-4 mt-2'>
+                  <h3 className='text-lg font-medium leading-6 text-gray-900'>
+                    Company
+                  </h3>
+                </div>
+                <div className='ml-4 mt-2 flex-shrink-0'>
+                  <Button onClick={open}>Add Company</Button>
+                </div>
+              </div>
+            </div>
             <ul role='list' className='divide-y divide-gray-200'>
               {data?.map((company) => (
                 <li key={company.id}>
