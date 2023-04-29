@@ -1,9 +1,15 @@
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 
+import Button from '@/components/buttons/Button';
+
 import getCompanyDetail from '@/services/company/getCompanyDetail';
 
-export default function CompanyDetails() {
+type CompanyDetailsProps = {
+  open: () => void;
+};
+
+export default function CompanyDetails({ open }: CompanyDetailsProps) {
   const router = useRouter();
   const { id } = router.query;
 
@@ -17,11 +23,18 @@ export default function CompanyDetails() {
 
   return (
     <div className='overflow-hidden bg-white shadow sm:rounded-lg'>
-      <div className='px-4 py-5 sm:px-6'>
-        <h3 className='text-lg font-medium leading-6 text-gray-900'>
-          {data?.name}
-        </h3>
-        <p className='mt-1 max-w-2xl text-sm text-gray-500'>{data?.address}</p>
+      <div className='flex justify-between px-4 py-5 sm:px-6'>
+        <div>
+          <h3 className='text-lg font-medium leading-6 text-gray-900'>
+            {data?.name}
+          </h3>
+          <p className='mt-1 max-w-2xl text-sm text-gray-500'>
+            {data?.address}
+          </p>
+        </div>
+        <div className='ml-4 mt-2 flex-shrink-0'>
+          <Button onClick={open}>Edit</Button>
+        </div>
       </div>
       <div className='border-t border-gray-200 px-4 py-5 sm:p-0'>
         <dl className='sm:divide-y sm:divide-gray-200'>

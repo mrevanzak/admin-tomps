@@ -2,6 +2,7 @@ import { Switch } from '@headlessui/react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Modal } from '@mantine/core';
 import { useMutation, useQuery } from '@tanstack/react-query';
+import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
@@ -12,6 +13,7 @@ import DatePicker from '@/components/forms/DatePicker';
 import Input from '@/components/forms/Input';
 
 import getCompanies from '@/services/company/getCompanies';
+import getCompanyDetail from '@/services/company/getCompanyDetail';
 import { Company, companySchema } from '@/services/company/types';
 import { httpClient } from '@/utils/http';
 
@@ -20,13 +22,30 @@ import SelectInput from './forms/SelectInput';
 type CompanyModalProps = {
   opened: boolean;
   close: () => void;
+  edit?: boolean;
 };
 
-export default function CompanyModal({ opened, close }: CompanyModalProps) {
-  const [enabled, setEnabled] = useState(false);
+export default function CompanyModal({
+  opened,
+  close,
+  edit,
+}: CompanyModalProps) {
+  const router = useRouter();
+  const { id } = router.query;
+
+  const { data: companyData } = useQuery(
+    ['company', id],
+    () => getCompanyDetail(id as string),
+    {
+      enabled: !!(id as string),
+    }
+  );
+  const [enabled, setEnabled] = useState(companyData?.parent_id ? true : false);
   const { mutate, isLoading } = useMutation({
     mutationFn: (formData: Company) => {
-      return httpClient.post('/company', formData);
+      return edit
+        ? httpClient.put(`/company/${id}`, formData)
+        : httpClient.post('/company', formData);
     },
     onSuccess: () => close(),
   });
@@ -51,13 +70,30 @@ export default function CompanyModal({ opened, close }: CompanyModalProps) {
     <Modal opened={opened} onClose={close} title='Company' centered>
       <FormProvider {...methods}>
         <form onSubmit={onSubmit} className='mt-4 max-w-lg space-y-4'>
-          <Input id='name' label='Name' />
-          <Input id='address' label='Address' />
-          <Input id='sector' label='Sector' />
-          <DatePicker id='date_established' label='Date Established' />
-          <Input id='email' label='Email' />
-          <Input id='phone' label='Phone' helperText='Use 08xx format' />
-          <Input id='npwp' label='NPWP' />
+          <Input id='name' label='Name' defaultValue={companyData?.name} />
+          <Input
+            id='address'
+            label='Address'
+            defaultValue={companyData?.address}
+          />
+          <Input
+            id='sector'
+            label='Sector'
+            defaultValue={companyData?.sector}
+          />
+          <DatePicker
+            id='date_established'
+            label='Date Established'
+            defaultValue={companyData?.date_established.toString()}
+          />
+          <Input id='email' label='Email' defaultValue={companyData?.email} />
+          <Input
+            id='phone'
+            label='Phone'
+            helperText='Use 08xx format'
+            defaultValue={companyData?.phone}
+          />
+          <Input id='npwp' label='NPWP' defaultValue={companyData?.npwp} />
           <Switch.Group as='div' className='flex items-center'>
             <Switch
               checked={enabled}
@@ -87,12 +123,15 @@ export default function CompanyModal({ opened, close }: CompanyModalProps) {
               label='Parent Company'
               placeholder='Choose company'
               isLoading={isLoadigGet}
+              defaultValue={companyData?.parent_id}
             >
-              {data?.map((company) => (
-                <option key={company.id} value={company.id}>
-                  {company.name}
-                </option>
-              ))}
+              {data
+                ?.filter((company) => company.id !== companyData?.id)
+                .map((company) => (
+                  <option key={company.id} value={company.id}>
+                    {company.name}
+                  </option>
+                ))}
             </SelectInput>
           )}
           <Button type='submit' isLoading={isLoading}>
