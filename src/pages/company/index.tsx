@@ -1,8 +1,8 @@
 import { useDisclosure } from '@mantine/hooks';
 
 import CompanyList from '@/components/CompanyList';
-import CompanyModal from '@/components/CompanyModal';
 import Layout from '@/components/layout/Layout';
+import CompanyModal from '@/components/modals/CompanyModal';
 
 export default function CompanyPage() {
   const [opened, { open, close }] = useDisclosure();
