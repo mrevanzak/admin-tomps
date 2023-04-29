@@ -12,10 +12,11 @@ import Button from '@/components/buttons/Button';
 import DatePicker from '@/components/forms/DatePicker';
 import Input from '@/components/forms/Input';
 
+import editCompanyDetail from '@/services/company/editCompanyDetail';
 import getCompanies from '@/services/company/getCompanies';
 import getCompanyDetail from '@/services/company/getCompanyDetail';
+import storeCompany from '@/services/company/storeCompany';
 import { Company, companySchema } from '@/services/company/types';
-import { httpClient } from '@/utils/http';
 
 import SelectInput from './forms/SelectInput';
 
@@ -44,8 +45,8 @@ export default function CompanyModal({
   const { mutate, isLoading } = useMutation({
     mutationFn: (formData: Company) => {
       return edit
-        ? httpClient.put(`/company/${id}`, formData)
-        : httpClient.post('/company', formData);
+        ? editCompanyDetail(id as string, formData)
+        : storeCompany(formData);
     },
     onSuccess: () => close(),
   });
