@@ -11,14 +11,13 @@ import clsxm from '@/lib/clsxm';
 import Button from '@/components/buttons/Button';
 import DatePicker from '@/components/forms/DatePicker';
 import Input from '@/components/forms/Input';
+import SelectInput from '@/components/forms/SelectInput';
 
 import editCompanyDetail from '@/services/company/editCompanyDetail';
 import getCompanies from '@/services/company/getCompanies';
 import getCompanyDetail from '@/services/company/getCompanyDetail';
 import storeCompany from '@/services/company/storeCompany';
 import { Company, companySchema } from '@/services/company/types';
-
-import SelectInput from './forms/SelectInput';
 
 type CompanyModalProps = {
   opened: boolean;
