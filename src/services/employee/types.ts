@@ -5,7 +5,7 @@ export const employeeSchema = z.object({
   status: z.boolean().optional(),
   category: z.string(),
   position: z.string().min(1, 'Position is required'),
-  date_of_birth: z.date(),
+  date_of_birth: z.string().pipe(z.coerce.date()),
   address: z.string().min(1, 'Address is required'),
   email: z.string().email().toLowerCase(),
   phone: z.string().min(1, 'Phone is required'),

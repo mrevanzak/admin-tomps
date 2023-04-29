@@ -4,7 +4,7 @@ export const companySchema = z.object({
   name: z.string().min(3).max(50),
   address: z.string().min(1, { message: 'Address is required' }),
   sector: z.string().min(1, { message: 'Sector is required' }),
-  date_established: z.date(),
+  date_established: z.string().pipe(z.coerce.date()),
   email: z.string().email().toLowerCase(),
   phone: z.string().min(1, { message: 'Phone is required' }),
   npwp: z.string().length(15),
