@@ -15,4 +15,6 @@ export const employeeSchema = z.object({
   company_id: z.string().uuid().optional(),
 });
 
-export type Employee = z.infer<typeof employeeSchema>;
+export type Employee = z.infer<typeof employeeSchema> & {
+  id: string;
+};
