@@ -1,15 +1,16 @@
+import { useDisclosure } from '@mantine/hooks';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
+import { HiTrash } from 'react-icons/hi';
 
 import Button from '@/components/buttons/Button';
+import IconButton from '@/components/buttons/IconButton';
+import CompanyModal from '@/components/modals/CompanyModal';
 
 import getCompanyDetail from '@/services/company/getCompanyDetail';
 
-type CompanyDetailsProps = {
-  open: () => void;
-};
-
-export default function CompanyDetails({ open }: CompanyDetailsProps) {
+export default function CompanyDetails() {
+  const [opened, { open, close }] = useDisclosure();
   const router = useRouter();
   const { id } = router.query;
 
@@ -23,6 +24,7 @@ export default function CompanyDetails({ open }: CompanyDetailsProps) {
 
   return (
     <div className='overflow-hidden bg-white shadow sm:rounded-lg'>
+      <CompanyModal edit opened={opened} close={close} />
       <div className='flex justify-between px-4 py-5 sm:px-6'>
         <div>
           <h3 className='text-lg font-medium leading-6 text-gray-900'>
@@ -32,8 +34,9 @@ export default function CompanyDetails({ open }: CompanyDetailsProps) {
             {data?.address}
           </p>
         </div>
-        <div className='ml-4 mt-2 flex-shrink-0'>
+        <div className='ml-4 mt-2 flex flex-shrink-0 gap-2'>
           <Button onClick={open}>Edit</Button>
+          <IconButton icon={HiTrash} variant='danger' />
         </div>
       </div>
       <div className='border-t border-gray-200 px-4 py-5 sm:p-0'>

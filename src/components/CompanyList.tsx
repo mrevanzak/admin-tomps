@@ -1,21 +1,22 @@
+import { useDisclosure } from '@mantine/hooks';
 import { useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
 import React from 'react';
 import { HiCalendar, HiChevronRight, HiPlus } from 'react-icons/hi';
 
 import IconButton from '@/components/buttons/IconButton';
+import CompanyModal from '@/components/modals/CompanyModal';
 
 import getCompanies from '@/services/company/getCompanies';
 
-type CompanyListProps = {
-  open: () => void;
-};
-
-export default function CompanyList({ open }: CompanyListProps) {
+export default function CompanyList() {
+  const [opened, { open, close }] = useDisclosure();
   const { data } = useQuery(['company'], () => getCompanies());
 
   return (
     <div className='overflow-hidden bg-white shadow sm:rounded-md'>
+      <CompanyModal opened={opened} close={close} />
+
       <div className='border-b border-gray-200 bg-white px-4 py-5 sm:px-6'>
         <div className='-ml-4 -mt-2 flex flex-wrap items-center justify-between sm:flex-nowrap'>
           <div className='ml-4 mt-2'>

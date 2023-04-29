@@ -1,17 +1,18 @@
+import { useDisclosure } from '@mantine/hooks';
 import { useQuery } from '@tanstack/react-query';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React from 'react';
+import { HiPlus } from 'react-icons/hi';
 import { HiUsers } from 'react-icons/hi2';
 
-import Button from '@/components/buttons/Button';
+import IconButton from '@/components/buttons/IconButton';
+import EmployeeModal from '@/components/modals/EmployeeModal';
 
 import getEmployees from '@/services/employee/getEmployees';
 
-type EmployeeListProps = {
-  open: () => void;
-};
-
-export default function EmployeeList({ open }: EmployeeListProps) {
+export default function EmployeeList() {
+  const [opened, { open, close }] = useDisclosure();
   const router = useRouter();
   const { id } = router.query;
 
@@ -20,6 +21,7 @@ export default function EmployeeList({ open }: EmployeeListProps) {
   });
   return (
     <div className='overflow-hidden bg-white shadow sm:rounded-lg'>
+      <EmployeeModal opened={opened} close={close} />
       <div className='border-b border-gray-200 bg-white px-4 py-5 sm:px-6'>
         <div className='-ml-4 -mt-2 flex flex-wrap items-center justify-between sm:flex-nowrap'>
           <div className='ml-4 mt-2'>
@@ -28,14 +30,17 @@ export default function EmployeeList({ open }: EmployeeListProps) {
             </h3>
           </div>
           <div className='ml-4 mt-2 flex-shrink-0'>
-            <Button onClick={open}>Add Employee</Button>
+            <IconButton icon={HiPlus} onClick={open} />
           </div>
         </div>
       </div>
       <ul role='list' className='divide-y divide-gray-200'>
         {data?.map((employee) => (
           <li key={employee.email}>
-            <a href='#' className='block hover:bg-gray-50'>
+            <Link
+              href={`/company/${id}/employee/${employee.id}`}
+              className='block hover:bg-gray-50'
+            >
               <div className='px-4 py-4 sm:px-6'>
                 <div className='flex items-center justify-between'>
                   <p className='truncate text-sm font-medium text-blue-600'>
@@ -54,7 +59,7 @@ export default function EmployeeList({ open }: EmployeeListProps) {
                   </div>
                 </div>
               </div>
-            </a>
+            </Link>
           </li>
         ))}
       </ul>
