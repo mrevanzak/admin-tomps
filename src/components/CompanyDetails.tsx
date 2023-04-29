@@ -1,16 +1,19 @@
 import { useDisclosure } from '@mantine/hooks';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import { HiTrash } from 'react-icons/hi';
 
 import Button from '@/components/buttons/Button';
 import IconButton from '@/components/buttons/IconButton';
+import AlertModal from '@/components/modals/AlertModal';
 import CompanyModal from '@/components/modals/CompanyModal';
 
+import deleteCompany from '@/services/company/deleteCompany';
 import getCompanyDetail from '@/services/company/getCompanyDetail';
 
 export default function CompanyDetails() {
   const [opened, { open, close }] = useDisclosure();
+  const [openedAlert, { open: openAlert, close: closeAlert }] = useDisclosure();
   const router = useRouter();
   const { id } = router.query;
 
@@ -22,9 +25,23 @@ export default function CompanyDetails() {
     }
   );
 
+  const { mutate, isLoading } = useMutation({
+    mutationFn: () => deleteCompany(id as string),
+    onSuccess: () => {
+      closeAlert();
+      router.push('/company');
+    },
+  });
+
   return (
     <div className='overflow-hidden bg-white shadow sm:rounded-lg'>
       <CompanyModal edit opened={opened} close={close} />
+      <AlertModal
+        opened={openedAlert}
+        close={closeAlert}
+        onDelete={() => mutate()}
+        isLoading={isLoading}
+      />
       <div className='flex justify-between px-4 py-5 sm:px-6'>
         <div>
           <h3 className='text-lg font-medium leading-6 text-gray-900'>
@@ -36,7 +53,7 @@ export default function CompanyDetails() {
         </div>
         <div className='ml-4 mt-2 flex flex-shrink-0 gap-2'>
           <Button onClick={open}>Edit</Button>
-          <IconButton icon={HiTrash} variant='danger' />
+          <IconButton icon={HiTrash} variant='danger' onClick={openAlert} />
         </div>
       </div>
       <div className='border-t border-gray-200 px-4 py-5 sm:p-0'>
