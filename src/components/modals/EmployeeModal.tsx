@@ -7,11 +7,10 @@ import { FormProvider, useForm } from 'react-hook-form';
 import Button from '@/components/buttons/Button';
 import DatePicker from '@/components/forms/DatePicker';
 import Input from '@/components/forms/Input';
+import SelectInput from '@/components/forms/SelectInput';
 
 import { Employee, employeeSchema } from '@/services/employee/types';
 import { httpClient } from '@/utils/http';
-
-import SelectInput from './forms/SelectInput';
 
 type EmployeeModalProps = {
   opened: boolean;
