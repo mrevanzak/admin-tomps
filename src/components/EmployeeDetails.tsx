@@ -21,7 +21,7 @@ export default function EmployeeDetails() {
     ['employee', employeeId],
     () => getEmployeeDetail(id as string, employeeId as string),
     {
-      enabled: router.isReady,
+      enabled: !!(id && employeeId),
     }
   );
 

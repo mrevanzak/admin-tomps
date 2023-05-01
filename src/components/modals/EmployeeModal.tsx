@@ -32,7 +32,7 @@ export default function EmployeeModal({
     ['employee', employeeId],
     () => getEmployeeDetail(id as string, employeeId as string),
     {
-      enabled: !!(id as string),
+      enabled: !!(id && employeeId),
     }
   );
 
