@@ -14,3 +14,9 @@ export const companySchema = z.object({
 });
 
 export type Company = z.infer<typeof companySchema>;
+
+export type CompanyHierarchy = {
+  id: string;
+  name: string;
+  children: CompanyHierarchy[];
+};

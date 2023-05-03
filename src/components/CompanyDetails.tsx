@@ -7,6 +7,7 @@ import Button from '@/components/buttons/Button';
 import IconButton from '@/components/buttons/IconButton';
 import AlertModal from '@/components/modals/AlertModal';
 import CompanyModal from '@/components/modals/CompanyModal';
+import HierarchyModal from '@/components/modals/HierarchyModal';
 
 import deleteCompany from '@/services/company/deleteCompany';
 import getCompanyDetail from '@/services/company/getCompanyDetail';
@@ -14,6 +15,9 @@ import getCompanyDetail from '@/services/company/getCompanyDetail';
 export default function CompanyDetails() {
   const [opened, { open, close }] = useDisclosure();
   const [openedAlert, { open: openAlert, close: closeAlert }] = useDisclosure();
+  const [openedHierarchy, { open: openHierarchy, close: closeHierarchy }] =
+    useDisclosure();
+
   const router = useRouter();
   const { id } = router.query;
 
@@ -42,10 +46,21 @@ export default function CompanyDetails() {
         onDelete={() => mutate()}
         isLoading={isLoading}
       />
+      <HierarchyModal
+        opened={openedHierarchy}
+        close={closeHierarchy}
+        companyId={id as string}
+      />
       <div className='flex justify-between px-4 py-5 sm:px-6'>
         <div>
-          <h3 className='text-lg font-medium leading-6 text-gray-900'>
+          <h3 className='flex text-lg font-medium leading-6 text-gray-900'>
             {data?.name}
+            <span
+              onClick={openHierarchy}
+              className='bg-primary-100 text-primary-700 ml-4 inline-block cursor-pointer whitespace-nowrap rounded-full px-[0.65em] pb-[0.25em] pt-[0.35em] text-center align-baseline text-[0.75em] font-bold leading-none'
+            >
+              {data?.parent_id ? 'Subsidiary' : 'Parent'}
+            </span>
           </h3>
           <p className='mt-1 max-w-2xl text-sm text-gray-500'>
             {data?.address}
