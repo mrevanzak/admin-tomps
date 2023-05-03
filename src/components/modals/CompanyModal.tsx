@@ -123,7 +123,7 @@ export default function CompanyModal({
               label='Parent Company'
               placeholder='Choose company'
               isLoading={isLoadigGet}
-              defaultValue={companyData?.parent_id}
+              defaultValue={companyData?.parent_id || undefined}
             >
               {data
                 ?.filter((company) => company.id !== companyData?.id)

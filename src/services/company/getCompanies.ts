@@ -1,10 +1,11 @@
-import { DataResponse } from '@/services/types';
 import { httpClient } from '@/utils/http';
 
-import { Company } from './types';
+import { companySchema } from './types';
 
 export default async function getCompanies() {
-  return httpClient
-    .get<DataResponse<Company[]>>('/company')
+  const response = await httpClient
+    .get('/company')
     .then(({ data }) => data.data);
+
+  return companySchema.array().parseAsync(response);
 }
