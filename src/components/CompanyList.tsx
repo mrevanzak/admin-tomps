@@ -53,7 +53,7 @@ export default function CompanyList() {
                           className='mr-1.5 h-5 w-5 flex-shrink-0 text-gray-400'
                           aria-hidden='true'
                         />
-                        <p>{company.date_established.toString()}</p>
+                        <p>{company.date_established.toLocaleDateString()}</p>
                       </div>
                     </div>
                   </div>
