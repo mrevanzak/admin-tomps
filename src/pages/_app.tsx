@@ -7,6 +7,7 @@ import {
 } from '@tanstack/react-query';
 import { AppProps } from 'next/app';
 import { toast, ToastContainer } from 'react-toastify';
+import { ZodError } from 'zod';
 
 import '@/styles/globals.css';
 import 'react-toastify/dist/ReactToastify.css';
@@ -18,6 +19,12 @@ import 'react-toastify/dist/ReactToastify.css';
 const queryClient = new QueryClient({
   queryCache: new QueryCache({
     onError: (err) => {
+      if (err instanceof ZodError) {
+        toast.error(
+          `Validation error on ${err.issues[0].path}: ${err.issues[0].message}`
+        );
+        return;
+      }
       if (err instanceof Error) {
         toast.error(err.message);
       }
