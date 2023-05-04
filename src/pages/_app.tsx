@@ -20,9 +20,10 @@ const queryClient = new QueryClient({
   queryCache: new QueryCache({
     onError: (err) => {
       if (err instanceof ZodError) {
-        toast.error(
-          `Validation error on ${err.issues[0].path}: ${err.issues[0].message}`
-        );
+        err.issues.forEach((issue) => {
+          toast.error(`Validation error on ${issue.path}: ${issue.message}`);
+        });
+
         return;
       }
       if (err instanceof Error) {
